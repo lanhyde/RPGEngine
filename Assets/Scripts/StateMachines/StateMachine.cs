@@ -52,7 +52,7 @@ public class StateMachine<T> {
         }
     }
 
-    void Update(float deltaTime)
+    public void Update(float deltaTime)
     {
         if(m_GlobalState != null)
         {
