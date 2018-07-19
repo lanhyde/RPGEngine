@@ -57,7 +57,7 @@ public class VisitBankAndDepositGold : State<Miner>
     {
         entity.AddToWealth(entity.GoldCarried);
         entity.GoldCarried = 0;
-        Debug.Log(EntityNames.GetNameOfEntity(entity.ID) + ": Depositing gold. Total savings now" +
+        Debug.Log(EntityNames.GetNameOfEntity(entity.ID) + ": Depositing gold. Total savings now " +
                     entity.Wealth);
         if(entity.Wealth >= Miner.ComfortLevel)
         {
@@ -85,24 +85,55 @@ public class VisitBankAndDepositGold : State<Miner>
 
 public class GoHomeAndSleepTilRested : State<Miner>
 {
+
     public override void Enter(Miner entity)
     {
-        throw new System.NotImplementedException();
+        if(entity.Location != Miner.LocationType.Shack)
+        {
+            Debug.Log(EntityNames.GetNameOfEntity(entity.ID) + ": Walin' home");
+            entity.Location = Miner.LocationType.Shack;
+
+            MessageDispatcher.Instance.DispatchMessage(MessageDispatcher.SEND_MSG_IMMEDIATELY,
+                                                        entity.ID,
+                                                        (int)EntityNames.EntityName.Wife_Elsa,
+                                                        (int)MessageReader.MessageType.Msg_HiHoneyImHome,
+                                                        MessageDispatcher.NO_ADDITIONAL_INFO);
+        }
     }
 
     public override void Execute(Miner entity)
     {
-        throw new System.NotImplementedException();
+        if(!entity.Fatigued())
+        {
+            Debug.Log(EntityNames.GetNameOfEntity(entity.ID) + ": All mah fatigue has drained away. " +
+                "Time to find more gold!");
+            entity.FSM.ChangeState(entity.GetMinerState(Miner.StateMinerType.StateEnterMineAndDigForNugget));
+        }
+        else
+        {
+            entity.DecreaseFatigue();
+            Debug.Log(EntityNames.GetNameOfEntity(entity.ID) + ": ZZZZ...");
+        }
     }
 
     public override void Exit(Miner entity)
     {
-        throw new System.NotImplementedException();
+        
     }
 
     public override bool OnMessage(Miner entity, Telegram telegram)
     {
-        throw new System.NotImplementedException();
+        MessageReader.MessageType msg = (MessageReader.MessageType)telegram.Msg;
+        switch (msg)
+        {
+            case MessageReader.MessageType.Msg_StewReady:
+                Debug.Log("Message handled by " + EntityNames.GetNameOfEntity(entity.ID) +
+                    " at time: " + Time.time);
+                Debug.Log(EntityNames.GetNameOfEntity(entity.ID) + ": Okay, Hun, ahm a comin'!");
+                entity.FSM.ChangeState(entity.GetMinerState(Miner.StateMinerType.StateEatStew));
+                return true;
+        }
+        return false;
     }
 }
 
@@ -110,22 +141,28 @@ public class QuenchThirst : State<Miner>
 {
     public override void Enter(Miner entity)
     {
-        throw new System.NotImplementedException();
+        if(entity.Location != Miner.LocationType.Saloon)
+        {
+            entity.Location = Miner.LocationType.Saloon;
+            Debug.Log(EntityNames.GetNameOfEntity(entity.ID) + ": Boy, ah sure is thusty! Waling to the saloon");
+        }
     }
 
     public override void Execute(Miner entity)
     {
-        throw new System.NotImplementedException();
+        entity.BuyAndDrinkAWhiskey();
+        Debug.Log(EntityNames.GetNameOfEntity(entity.ID) + ": That's mighty fine sippin' liquer");
+        entity.FSM.ChangeState(entity.GetMinerState(Miner.StateMinerType.StateEnterMineAndDigForNugget));
     }
 
     public override void Exit(Miner entity)
     {
-        throw new System.NotImplementedException();
+        Debug.Log(EntityNames.GetNameOfEntity(entity.ID) + ": Leaving the saloon, feelin' good");
     }
 
     public override bool OnMessage(Miner entity, Telegram telegram)
     {
-        throw new System.NotImplementedException();
+        return false;
     }
 }
 
@@ -133,22 +170,23 @@ public class EatStew : State<Miner>
 {
     public override void Enter(Miner entity)
     {
-        throw new System.NotImplementedException();
+        Debug.Log(EntityNames.GetNameOfEntity(entity.ID) + ": Smells real good elsa!");
     }
 
     public override void Execute(Miner entity)
     {
-        throw new System.NotImplementedException();
+        Debug.Log(EntityNames.GetNameOfEntity(entity.ID) + ": Tates real good too!");
+        entity.FSM.RevertToPreviousState();
     }
 
     public override void Exit(Miner entity)
     {
-        throw new System.NotImplementedException();
+        Debug.Log(EntityNames.GetNameOfEntity(entity.ID) + ": Thankya li'lle lady. Ah better get back to whatever ah wuz doin'");
     }
 
     public override bool OnMessage(Miner entity, Telegram telegram)
     {
-        throw new System.NotImplementedException();
+        return false;
     }
 }
 

@@ -3,12 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MesssageDispatcher : Singleton<MesssageDispatcher>
+public class MessageDispatcher : Singleton<MessageDispatcher>
 {
     public const float SEND_MSG_IMMEDIATELY = 0.0f;
-    public const int NO_ADDITIONAL_INFO = 0;
+    public const object NO_ADDITIONAL_INFO = null;
 
-    private HashSet<Telegram> priorityQueue;
+    private HashSet<Telegram> priorityQueue = new HashSet<Telegram>();
 
     private void Discharge(BaseGameEntity receiver, Telegram msg)
     {
@@ -59,6 +59,18 @@ public class MesssageDispatcher : Singleton<MesssageDispatcher>
 
     public void DispatchDelayedMessage()
     {
+        float currentTime = Time.time;
 
+        var enumerator = priorityQueue.GetEnumerator();
+        while(priorityQueue.Count > 0 && enumerator.MoveNext() &&
+            enumerator.Current.DispatchTime > 0)
+        {
+            Telegram telegram = enumerator.Current;
+            BaseGameEntity receiverEntity = EntityManager.Instance.GetEntityFromID(telegram.Receiver);
+            Debug.Log("Queued telegram ready for dispatch: Sent to " + EntityNames.GetNameOfEntity(receiverEntity.ID) +
+                        ". Msg is " + MessageReader.GetReadableMessage(telegram.Msg));
+            Discharge(receiverEntity, telegram);
+            priorityQueue.Remove(telegram);
+        }
     }
 }

@@ -31,7 +31,7 @@ namespace Pattern.Singleton
 
                     ConstructorInfo[] ctors = t.GetConstructors();
 
-                    if (ctors.Length > 0)
+                    if (ctors.Length > 1)
                     {
                         throw new InvalidOperationException(string.Format("{0} has at least one accessible ctor making it " +
                             "impossible to enforce singleton behaviour", t.Name));

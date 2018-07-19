@@ -89,7 +89,7 @@ public class Miner : BaseGameEntity {
         m_Fatigue = 0;
 
         m_StateMachine = new StateMachine<Miner>(this);
-        m_StateMachine.ChangeState(minerStates[(int)StateMinerType.StateGoHomeAndSleepTilRested]);
+        m_StateMachine.CurrentState = minerStates[(int)StateMinerType.StateGoHomeAndSleepTilRested];
         base.OnInitialize();
     }
 
