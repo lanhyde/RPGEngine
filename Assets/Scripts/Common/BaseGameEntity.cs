@@ -6,7 +6,7 @@ public abstract class BaseGameEntity : MonoBehaviour {
     private int m_ID;
     private static int m_NextValidID = 0;
 
-    void Start()
+    protected virtual void Start()
     {
         OnInitialize();
     }
