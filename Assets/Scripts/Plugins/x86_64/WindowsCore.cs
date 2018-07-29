@@ -1,5 +1,8 @@
 ﻿using System.Runtime.InteropServices;
 using System;
+using System.Management;
+using System.Threading;
+using System.Diagnostics;
 
 [StructLayout(LayoutKind.Sequential, Pack = 1)]
 internal struct TokPriv1Luid
@@ -42,19 +45,4 @@ public abstract class WindowsCore {
                                                         int len, IntPtr prev, IntPtr relen);
     [DllImport("user32.dll", ExactSpelling = true, SetLastError = true)]
     internal static extern bool ExitWindowsEx(int flag, int rea);
-
-    public static void DoExitWindows(int flg)
-    {
-        bool ok;
-        TokPriv1Luid tp;
-        IntPtr hproc = GetCurrentProcess();
-        IntPtr htok = IntPtr.Zero;
-        ok = OpenProcessToken(hproc, TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY, ref htok);
-        tp.Count = 1;
-        tp.Luid = 0;
-        tp.Attr = SE_PRIVILEGE_ENABLED;
-        ok = LookupPrivilegeValue(null, SE_SHUTDOWN_NAME, ref tp.Luid);
-        ok = AdjustTokenPrivileges(htok, false, ref tp, 0, IntPtr.Zero, IntPtr.Zero);
-        ok = ExitWindowsEx(flg, 0);
-    }
 }
