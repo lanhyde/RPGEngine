@@ -5,6 +5,7 @@
     void Delete(T data);
     T GetMax();
     T GetMin();
+    bool Contains(T data);
 }
 
 public enum TraverseType

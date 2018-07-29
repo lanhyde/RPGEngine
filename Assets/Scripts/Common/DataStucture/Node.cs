@@ -4,6 +4,7 @@ using System.Collections;
 public class Node<T> : IComparable, IComparable<T> where T: IComparable<T>
 {
     public T Data { get; set; }
+    public int Height { get; set; }
     public Node<T> LeftChild { get; set; }
     public Node<T> RightChild { get; set; }
 
