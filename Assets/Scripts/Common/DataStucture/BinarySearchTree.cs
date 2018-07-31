@@ -3,8 +3,8 @@ using System.Collections.Generic;
 
 public class BinarySearchTree<T> : IDisposable, ITree<T> where T : IComparable<T>
 {
-    private Node<T> root;
-    private List<T> cachedBuffer = new List<T>();
+    protected Node<T> root;
+    protected List<T> cachedBuffer = new List<T>();
 
     public void Delete(T data)
     {
@@ -174,7 +174,7 @@ public class BinarySearchTree<T> : IDisposable, ITree<T> where T : IComparable<T
         return node.Data;
     }
 
-    public void Insert(T data)
+    public virtual void Insert(T data)
     {
         root = InsertNode(data, root);
     }
@@ -184,7 +184,7 @@ public class BinarySearchTree<T> : IDisposable, ITree<T> where T : IComparable<T
         cachedBuffer.Clear();
     }
 
-    public T[] Traverse(TraverseType traverseType)
+    public virtual T[] Traverse(TraverseType traverseType)
     {
         switch (traverseType)
         {
@@ -203,7 +203,7 @@ public class BinarySearchTree<T> : IDisposable, ITree<T> where T : IComparable<T
         return result;
     }
 
-    private void PostOrderTraverse(Node<T> root, Action<Node<T>> callback = null)
+    protected virtual void PostOrderTraverse(Node<T> root, Action<Node<T>> callback = null)
     {
         if (root == null)
             return;
@@ -217,7 +217,7 @@ public class BinarySearchTree<T> : IDisposable, ITree<T> where T : IComparable<T
         }
         callback(root);
     }
-    private void InOrderTraverse(Node<T> root, Action<Node<T>> callback = null)
+    protected virtual void InOrderTraverse(Node<T> root, Action<Node<T>> callback = null)
     {
         if (root == null)
             return;
@@ -228,11 +228,11 @@ public class BinarySearchTree<T> : IDisposable, ITree<T> where T : IComparable<T
         callback(root);
         if (root.RightChild != null)
         {
-            InOrderTraverse(root.RightChild);
+            InOrderTraverse(root.RightChild, callback);
         }
     }
 
-    private void PreOrderTraverse(Node<T> root, Action<Node<T>> callback = null)
+    protected virtual void PreOrderTraverse(Node<T> root, Action<Node<T>> callback = null)
     {
         if (root == null)
             return;
