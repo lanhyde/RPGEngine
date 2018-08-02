@@ -34,7 +34,7 @@ public class RBTree<T> : BinarySearchTree<T> where T : IComparable<T>
         return root;
     }
 
-    private void LeftRotation(Node<T> node)
+    protected void LeftRotation(Node<T> node)
     {
         Node<T> tempRightNode = node.RightChild;
         node.RightChild = tempRightNode.LeftChild;
@@ -63,7 +63,7 @@ public class RBTree<T> : BinarySearchTree<T> where T : IComparable<T>
 
     }
 
-    private void RightRotation(Node<T> node)
+    protected void RightRotation(Node<T> node)
     {
         Node<T> tempLeftNode = node.LeftChild;
         node.LeftChild = tempLeftNode.RightChild;
