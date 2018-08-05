@@ -65,4 +65,9 @@ public class UIEventListener : EventTrigger
             onBeginDrag(gameObject);
         }   
     }
+
+    public override void OnDrag(PointerEventData eventData)
+    {
+        
+    }
 }

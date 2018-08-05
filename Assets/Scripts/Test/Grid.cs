@@ -8,18 +8,15 @@ public class Grid : MonoBehaviour
 {
     public bool m_switch;//スイッチ
     Image m_image;
-    private Canvas m_canvas;
+
     void Start()
     {
-
         m_switch = true;
         m_image = GetComponent<Image>();
-        m_canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
 
         UIEventListener.Get(gameObject).onPointEnter = PointEnter;
         UIEventListener.Get(gameObject).onPointExit = PointExit;
-        UIEventListener.Get(gameObject).onBeginDrag = PointBeginDrag;
-
+        UIEventListener.Get(gameObject).onBeginDrag = PointerDown;
     }
 
     //Enter
@@ -34,14 +31,12 @@ public class Grid : MonoBehaviour
         if (m_switch)
             m_image.color = Color.white;
     }
+
     //Drag
-    public void PointBeginDrag(GameObject go)
+    public void PointerDown(GameObject go)
     {
-        Instantiate<GameObject>(gameObject);
-       
+        GameObject temp = Instantiate<GameObject>(gameObject);
     }
-
-
 
 
 
@@ -62,7 +57,5 @@ public class Grid : MonoBehaviour
     //{
     //    Vector2 postion;
     //    RectTransformUtility.ScreenPointToLocalPointInRectangle(m_canvas.transform as RectTransform,Input.mousePosition,null,out postion);
-
-
     //}
 }

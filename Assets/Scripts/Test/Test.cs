@@ -20,7 +20,6 @@ public class Test : MonoBehaviour {
         int gridWidth = (int)grid.sizeDelta.x;
         int gridHeight = (int)grid.sizeDelta.y;
 
-
         for (int i = 0; i < (mapWidth / gridWidth) * (mapHeight / gridHeight); i++)//print map
         {
             GameObject temp = Instantiate<GameObject>(m_grid);
@@ -31,8 +30,4 @@ public class Test : MonoBehaviour {
         }
     }
 
-    // Update is called once per frame
-    void Update () {
-		
-	}
 }
