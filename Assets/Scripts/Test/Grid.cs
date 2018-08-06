@@ -11,31 +11,36 @@ public class Grid : MonoBehaviour
 
     void Start()
     {
+
         m_switch = true;
         m_image = GetComponent<Image>();
 
         UIEventListener.Get(gameObject).onPointEnter = PointEnter;
         UIEventListener.Get(gameObject).onPointExit = PointExit;
-        UIEventListener.Get(gameObject).onBeginDrag = PointerDown;
+        UIEventListener.Get(gameObject).onPointDrop = PointDrop;
+
     }
 
     //Enter
-    public void PointEnter(GameObject go)
+    private void PointEnter(GameObject go)
     {
         if (m_switch)
             m_image.color = Color.green;
     }
     //Exit
-    public void PointExit(GameObject go)
+    private void PointExit(GameObject go)
     {
         if (m_switch)
             m_image.color = Color.white;
     }
 
-    //Drag
-    public void PointerDown(GameObject go)
+    private void PointDrop(GameObject go)
     {
-        GameObject temp = Instantiate<GameObject>(gameObject);
+        if (SetItem.m_item != null)
+        {
+            SetItem.m_item = null;
+        }
+ 
     }
 
 
@@ -44,18 +49,4 @@ public class Grid : MonoBehaviour
 
 
 
-
-
-
-
-
-
-
-
-
-    //public void vvv()
-    //{
-    //    Vector2 postion;
-    //    RectTransformUtility.ScreenPointToLocalPointInRectangle(m_canvas.transform as RectTransform,Input.mousePosition,null,out postion);
-    //}
 }
