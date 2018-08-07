@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Test : MonoBehaviour {
+public class Map : MonoBehaviour {
 
     public GameObject m_grid;
 
     public RectTransform m_map; //base map
 
     public List<GameObject> m_grids;
+
+    public Transform m_canvas;
     void Start ()
     {
         m_map = GetComponent<RectTransform>();
@@ -31,8 +33,5 @@ public class Test : MonoBehaviour {
         }
     }
 
-    // Update is called once per frame
-    void Update () {
-		
-	}
+
 }
