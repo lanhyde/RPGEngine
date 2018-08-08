@@ -6,7 +6,10 @@ using UnityEngine.UI;
 public class SetItem : MonoBehaviour {
 
     public Transform[] itemPostions;
-    public static GameObject m_item;
+
+    private GameObject m_item;
+    public static GameObject _item;
+
     private void Start()
     {
         for(int i = 0; i < itemPostions.Length; i++)
@@ -16,15 +19,14 @@ public class SetItem : MonoBehaviour {
             tempGameObj.transform.position = itemPostions[i].position;
             tempGameObj.GetComponent<Image>().sprite = Resources.Load<Sprite>("Sprite/0" + i.ToString());
 
-            UIEventListener.Get(tempGameObj).onPointEnter = PointEnter;
-            //UIEventListener.Get(tempGameObj).onPointBeginDrag = PointBeginDrag;
+            UIEventListener.Get(tempGameObj).onClickL = PointDownL;
         }
 
         m_item = null;
 
     }
 
-    private void PointEnter(GameObject go)
+    private void PointDownL(GameObject go)
     {
         if (m_item == null)
         {
@@ -32,29 +34,41 @@ public class SetItem : MonoBehaviour {
             m_item.transform.SetParent(transform.parent);
             m_item.transform.position = go.transform.position;
 
-            UIEventListener.Get(m_item).onPointBeginDrag = PointBeginDrag;
-            UIEventListener.Get(m_item).onPointDrag = PointDrag;
-            UIEventListener.Get(m_item).onPointDragEnd = PointDragEnd;
+            _item = go;
+
+            Image itemImage = m_item.GetComponent<Image>();
+            Color c = itemImage.color;
+            c.a = 0.5f;
+            itemImage.color = c;
+            itemImage.raycastTarget = false;
+
+            StartCoroutine(ItemOrMouse(itemImage));
         }
     }
 
-
-    //private void PointExit(GameObject go)
-    //{
-    //    Destroy(go);
-    ////}
-
-    private void PointBeginDrag(GameObject go)
+    public IEnumerator ItemOrMouse(Image image)
     {
-    
-    }  
-    private void PointDrag(GameObject go)
-    {
-
+        Vector3 mousePos;
+        while (true)
+        {
+            if (Input.GetMouseButtonDown(1))
+            {
+                image.raycastTarget = true;
+                Destroy(m_item);
+                //yield return new WaitForSeconds(0.5f);
+                m_item = null;
+                _item = null;
+                StopCoroutine(ItemOrMouse(image));
+            }
+            if (m_item != null)
+            {
+                mousePos = Input.mousePosition;
+                m_item.transform.position = mousePos;
+            }
+            yield return new WaitForSeconds(0.01f);
+         
+        }
     }
-    private void PointDragEnd(GameObject go)
-    {
-     
-    }
+
 
 }

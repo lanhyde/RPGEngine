@@ -11,16 +11,25 @@ public class Grid : MonoBehaviour
 
     void Start()
     {
-
         m_switch = true;
         m_image = GetComponent<Image>();
 
+        UIEventListener.Get(gameObject).onClickL = PointClick;
         UIEventListener.Get(gameObject).onPointEnter = PointEnter;
         UIEventListener.Get(gameObject).onPointExit = PointExit;
-        UIEventListener.Get(gameObject).onPointDrop = PointDrop;
 
     }
 
+    private void PointClick(GameObject go)
+    {
+        if(SetItem._item != null)
+        {
+            GameObject tempItem = Instantiate<GameObject>(SetItem._item);
+            tempItem.transform.SetParent(go.transform.parent.parent.Find("Items"));
+            tempItem.transform.position = go.transform.position;
+            UIEventListener.Get(tempItem).onClickR = PointClickR;
+        }
+    }
     //Enter
     private void PointEnter(GameObject go)
     {
@@ -34,14 +43,12 @@ public class Grid : MonoBehaviour
             m_image.color = Color.white;
     }
 
-    private void PointDrop(GameObject go)
+    private void PointClickR(GameObject go)
     {
-        if (SetItem.m_item != null)
+        if (SetItem._item == null)
         {
-            SetItem.m_item = null;
+            Destroy(go);
         }
- 
     }
-
 
 }

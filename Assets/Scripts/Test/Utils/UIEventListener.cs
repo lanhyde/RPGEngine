@@ -7,7 +7,8 @@ using UnityEngine.UI;
 public class UIEventListener : EventTrigger 
 {
 
-    public delegate void VoidDelegate(GameObject go);
+    public delegate void MouseL(GameObject go);// +
+    public delegate void MouseR(GameObject go);// -
     public delegate void BoolDelegate(GameObject go, bool isValue);
 
     public delegate void PointEnterDelegate(GameObject go); //1  Enter
@@ -17,7 +18,9 @@ public class UIEventListener : EventTrigger
     public delegate void PointDragEnd(GameObject go);       //5  DragEnd
     public delegate void PointDrop(GameObject go);          //6  Drop
 
-    public VoidDelegate onClick;            
+    public MouseL onClickL;
+    public MouseR onClickR;
+
     public BoolDelegate onToggleChange;     
 
     public PointExitDelegate onPointExit;   //1  Exit
@@ -39,11 +42,23 @@ public class UIEventListener : EventTrigger
     //Button、Toggle
     public override void OnPointerClick(PointerEventData eventData) 
     {
-        if(onClick != null)
+        switch (eventData.button)
         {
-            onClick(gameObject);
-            print("Pointer Click    On Click");
+            case PointerEventData.InputButton.Left:
+                if (onClickL != null)
+                {
+                    onClickL(gameObject);
+                }
+                break;
+            case PointerEventData.InputButton.Right:
+                if (onClickR != null)
+                {
+                    onClickR(gameObject);
+                }
+                break;
         }
+
+      
         if (onToggleChange != null)
         {
             onToggleChange(gameObject, gameObject.GetComponent<Toggle>().isOn);
@@ -74,50 +89,22 @@ public class UIEventListener : EventTrigger
     //3  BeginDrag
     public override void OnBeginDrag(PointerEventData eventData)
     {
-        if (onPointBeginDrag != null)
-        {
-            onPointBeginDrag(gameObject);
-            gameObject.transform.position = eventData.position;
-            gameObject.GetComponent<Image>().raycastTarget = false;
-        }
+
     }
     //4  Drag
     public override void OnDrag(PointerEventData eventData)
     {
-        if (onPointDrag != null)
-        {
-            onPointDrag(gameObject);
-            gameObject.transform.position = eventData.position;
-            
-        }
+
     }
     //5  DragEnd
     public override void OnEndDrag(PointerEventData eventData)
     {
-        if(onPointDragEnd != null)
-        {
-            onPointBeginDrag(gameObject);
-            gameObject.GetComponent<Image>().raycastTarget = true;
-        }
+
     }
     //6  Drop
     public override void OnDrop(PointerEventData eventData)
     {
-        if(onPointDrop != null)
-        {
-          
-            if(eventData.pointerPress.tag != "Grid")
-            {
-                //
-                eventData.pointerPress.transform.SetParent(eventData.pointerPress.transform.parent.Find("Map/Items"));
-                eventData.pointerPress.transform.position = gameObject.transform.position;
-            }
-            else
-            {
-                
-            }
-            onPointDrop(gameObject);
-        }
-    }
 
+    }
+ 
 }
