@@ -22,7 +22,6 @@ public class Map : MonoBehaviour {
         int gridWidth = (int)grid.sizeDelta.x;
         int gridHeight = (int)grid.sizeDelta.y;
 
-
         for (int i = 0; i < (mapWidth / gridWidth) * (mapHeight / gridHeight); i++)//print map
         {
             GameObject temp = Instantiate<GameObject>(m_grid);
@@ -32,6 +31,5 @@ public class Map : MonoBehaviour {
             m_grids.Add(temp);
         }
     }
-
 
 }

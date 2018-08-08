@@ -17,7 +17,6 @@ public class Grid : MonoBehaviour
         UIEventListener.Get(gameObject).onClickL = PointClick;
         UIEventListener.Get(gameObject).onPointEnter = PointEnter;
         UIEventListener.Get(gameObject).onPointExit = PointExit;
-
     }
 
     private void PointClick(GameObject go)
@@ -43,6 +42,7 @@ public class Grid : MonoBehaviour
             m_image.color = Color.white;
     }
 
+
     private void PointClickR(GameObject go)
     {
         if (SetItem._item == null)
@@ -50,5 +50,4 @@ public class Grid : MonoBehaviour
             Destroy(go);
         }
     }
-
 }
