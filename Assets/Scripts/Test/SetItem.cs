@@ -5,18 +5,18 @@ using UnityEngine.UI;
 
 public class SetItem : MonoBehaviour {
 
-    public Transform[] itemPostions;
+    public Transform[] m_ItemPostions;
 
     private GameObject m_item;
-    public static GameObject _item;
+    public static GameObject _Item;
 
     private void Start()
     {
-        for(int i = 0; i < itemPostions.Length; i++)
+        for(int i = 0; i < m_ItemPostions.Length; i++)
         {
             GameObject tempGameObj = Instantiate(Resources.Load("Perfab/Item")) as GameObject;
             tempGameObj.transform.SetParent(transform.Find("0" + i.ToString()).transform);
-            tempGameObj.transform.position = itemPostions[i].position;
+            tempGameObj.transform.position = m_ItemPostions[i].position;
             tempGameObj.GetComponent<Image>().sprite = Resources.Load<Sprite>("Sprite/0" + i.ToString());
 
             UIEventListener.Get(tempGameObj).onClickL = PointDownL;
@@ -34,7 +34,7 @@ public class SetItem : MonoBehaviour {
             m_item.transform.SetParent(transform.parent);
             m_item.transform.position = go.transform.position;
 
-            _item = go;
+            _Item = go;
 
             Image itemImage = m_item.GetComponent<Image>();
             Color c = itemImage.color;
@@ -43,6 +43,28 @@ public class SetItem : MonoBehaviour {
             itemImage.raycastTarget = false;
 
             StartCoroutine(ItemOrMouse(itemImage));
+        }
+        else
+        {
+            if(m_item != go)
+            {
+                StopAllCoroutines();
+                Destroy(m_item);
+                m_item = Instantiate<GameObject>(go);
+                m_item.transform.SetParent(transform.parent);
+                m_item.transform.position = go.transform.position;
+
+                _Item = go;
+
+                Image itemImage = m_item.GetComponent<Image>();
+                Color c = itemImage.color;
+                c.a = 0.5f;
+                itemImage.color = c;
+                itemImage.raycastTarget = false;
+
+                
+                StartCoroutine(ItemOrMouse(itemImage));
+            }
         }
     }
 
@@ -57,7 +79,7 @@ public class SetItem : MonoBehaviour {
                 Destroy(m_item);
                 //yield return new WaitForSeconds(0.5f);
                 m_item = null;
-                _item = null;
+                _Item = null;
                 StopCoroutine(ItemOrMouse(image));
             }
             if (m_item != null)
@@ -65,7 +87,7 @@ public class SetItem : MonoBehaviour {
                 mousePos = Input.mousePosition;
                 m_item.transform.position = mousePos;
             }
-            yield return new WaitForSeconds(0.01f);
+            yield return null;
          
         }
     }

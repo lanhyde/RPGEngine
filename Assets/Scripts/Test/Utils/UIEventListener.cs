@@ -9,8 +9,8 @@ public class UIEventListener : EventTrigger
 
     public delegate void MouseL(GameObject go);// +
     public delegate void MouseR(GameObject go);// -
-
     public delegate void BoolDelegate(GameObject go, bool isValue);
+    
 
     public delegate void PointEnterDelegate(GameObject go); //1  Enter
     public delegate void PointExitDelegate(GameObject go);  //2  Exit
@@ -22,7 +22,6 @@ public class UIEventListener : EventTrigger
 
     public MouseL onClickL;
     public MouseR onClickR;
-
     public BoolDelegate onToggleChange;     
 
     public PointExitDelegate onPointExit;   //1  Exit
@@ -108,5 +107,4 @@ public class UIEventListener : EventTrigger
     {
 
     }
- 
 }

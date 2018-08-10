@@ -5,30 +5,29 @@ using UnityEngine.UI;
 
 public class Map : MonoBehaviour {
 
-    public GameObject m_grid;
+    public GameObject m_Grid;
 
-    public RectTransform m_map; //base map
+    public RectTransform m_Map; //base map
 
-    public List<GameObject> m_grids;
+    public List<GameObject> m_Grids;
 
-    public Transform m_canvas;
     void Start ()
     {
-        m_map = GetComponent<RectTransform>();
-        int mapWidth = (int)m_map.sizeDelta.x;
-        int mapHeight = (int)m_map.sizeDelta.y;
+        m_Map = GetComponent<RectTransform>();
+        int mapWidth = (int)m_Map.sizeDelta.x;
+        int mapHeight = (int)m_Map.sizeDelta.y;
 
-        RectTransform grid = m_grid.GetComponent<RectTransform>();
+        RectTransform grid = m_Grid.GetComponent<RectTransform>();
         int gridWidth = (int)grid.sizeDelta.x;
         int gridHeight = (int)grid.sizeDelta.y;
 
         for (int i = 0; i < (mapWidth / gridWidth) * (mapHeight / gridHeight); i++)//print map
         {
-            GameObject temp = Instantiate<GameObject>(m_grid);
+            GameObject temp = Instantiate<GameObject>(m_Grid);
             temp.name = "Grid" + i;
             temp.transform.SetParent(transform.Find("Group"));
             temp.AddComponent<Grid>();
-            m_grids.Add(temp);
+            m_Grids.Add(temp);
         }
     }
 

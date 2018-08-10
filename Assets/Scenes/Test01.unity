@@ -260,9 +260,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d16696f292652ca42937856097d3b08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_grid: {fileID: 1830700984846028, guid: f69e35f59eb73f143a836adaf4033544, type: 2}
-  m_map: {fileID: 386845513}
-  m_grids: []
+  m_Grid: {fileID: 1830700984846028, guid: f69e35f59eb73f143a836adaf4033544, type: 2}
+  m_Map: {fileID: 386845513}
+  m_Grids: []
 --- !u!1 &528635779
 GameObject:
   m_ObjectHideFlags: 0
@@ -351,7 +351,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 138ce39a6c8ca8b4b88b1aec9b7010ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemPostions:
+  m_ItemPostions:
   - {fileID: 1035455659}
   - {fileID: 930727166}
   - {fileID: 528635780}
